@@ -29,6 +29,10 @@ function App() {
           }}
         />
       </Container>
+
+      <Container>
+        <Title>2. 모달</Title>
+      </Container>
     </div>
   );
 }
