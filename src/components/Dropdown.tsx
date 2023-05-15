@@ -85,9 +85,12 @@ const MenuButtonContainer = styled.div`
 `;
 
 const MenuListContainer = styled.div<{ maxHeight: number }>`
-  position: relative;
+  position: absolute;
+  width: 100%;
   max-height: ${({ maxHeight }) => maxHeight}px;
   overflow-y: auto;
+  background-color: white;
+  z-index: 1000;
 `;
 
 const MenuItem = styled.div`
