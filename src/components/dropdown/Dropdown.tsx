@@ -50,7 +50,7 @@ const Dropdown: React.FC<Props> = ({
         <MdArrowDropDown size={24} color='blue' />
       </MenuButtonContainer>
       {isOpen && (
-        <MenuListContainer maxHeight={maxHeight}>
+        <MenuListContainer max={maxHeight}>
           {menuList.map((item, index) => (
             <MenuItem
               ref={index === 0 ? itemRef : null}
@@ -84,10 +84,10 @@ const MenuButtonContainer = styled.div`
   padding: 13px;
 `;
 
-const MenuListContainer = styled.div<{ maxHeight: number }>`
+const MenuListContainer = styled.div<{ max: number }>`
   position: absolute;
   width: 100%;
-  max-height: ${({ maxHeight }) => maxHeight}px;
+  max-height: ${({ max }) => max}px;
   overflow-y: auto;
   background-color: white;
   z-index: 1000;
