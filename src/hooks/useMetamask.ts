@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { STATUS } from "../model/wallet";
+import { Web3Provider } from "@ethersproject/providers";
+import { BigNumber, ethers } from "ethers";
 
 export const useMetamask = () => {
   const [account, setAccount] = useState<string>();
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState<BigNumber>();
   const [network, setNetwork] = useState<string | null>();
   const [status, setStatus] = useState<STATUS>(STATUS.DISCONNECTED);
 
@@ -33,10 +35,17 @@ export const useMetamask = () => {
     setStatus(STATUS.DISCONNECTED);
   };
 
-  const fetchBalance = async () => {};
+  const fetchBalance = async () => {
+    if (!account || !network) return;
+    console.log("network", network);
+    const provider = new Web3Provider(window.ethereum as any);
+    const balance = await provider.getBalance(account);
+    console.log(balance, ethers.utils.formatEther(balance));
+    setBalance(balance);
+  };
   useEffect(() => {
     fetchBalance();
-  }, []);
+  }, [account, network]);
 
   useEffect(() => {
     connect();

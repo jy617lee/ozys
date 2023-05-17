@@ -7,6 +7,7 @@ import { usePopup } from "./hooks/usePopup";
 import PopupA from "./components/popup/PopupA";
 import { useMetamask } from "./hooks/useMetamask";
 import { STATUS } from "./model/wallet";
+import { formatEther } from "./utils/formatEther";
 
 function App() {
   const [selectedToken, setSelectedToken] = useState<TOKEN>();
@@ -90,7 +91,7 @@ function App() {
         <VStack height={40}>
           <p>계정: {account}</p>
           <p>네트워크: {network}</p>
-          <p>이더리움 잔고: {balance}</p>
+          <p>이더리움 잔고: {formatEther(balance)}</p>
         </VStack>
       </Container>
     </div>
