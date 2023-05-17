@@ -62,6 +62,13 @@ export const useMetamask = () => {
     setBalance(undefined);
   }, []);
 
+  const moveToInstall = useCallback(() => {
+    window.open(
+      "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
+      "_blank",
+      "noreferrer"
+    );
+  }, []);
   const fetchBalance = useCallback(async () => {
     if (!account) return;
 
@@ -82,5 +89,6 @@ export const useMetamask = () => {
     connect,
     disconnect,
     setNetwork,
+    moveToInstall,
   };
 };

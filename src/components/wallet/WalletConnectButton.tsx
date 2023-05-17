@@ -4,7 +4,7 @@ import { useMetamask } from "../../hooks/useMetamask";
 import { STATUS } from "../../model/wallet";
 
 const WalletConnectButton: FunctionComponent = () => {
-  const { status, connect, disconnect } = useMetamask();
+  const { status, connect, disconnect, moveToInstall } = useMetamask();
 
   const walletButtonText = useMemo(() => {
     switch (status) {
@@ -30,6 +30,7 @@ const WalletConnectButton: FunctionComponent = () => {
         break;
       }
       case STATUS.NOT_INSTALL: {
+        moveToInstall();
         break;
       }
       default: {
