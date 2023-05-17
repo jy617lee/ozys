@@ -1,15 +1,49 @@
-import { useState } from "react";
-import TokenDropdown from "./components/TokenDropdown";
+import { useCallback, useMemo, useState } from "react";
+import TokenDropdown from "./components/dropdown/TokenDropdown";
 import { TOKENS } from "./data/tokens";
 import { TOKEN } from "./model/token";
 import styled from "styled-components";
 import { usePopup } from "./hooks/usePopup";
 import PopupA from "./components/popup/PopupA";
+import { useMetamask } from "./hooks/useMetamask";
+import { STATUS } from "./model/wallet";
 
 function App() {
   const [selectedToken, setSelectedToken] = useState<TOKEN>();
-
   const { popups, openPopup, closePopup } = usePopup();
+  const { account, balance, network, status, connect, disconnect } =
+    useMetamask();
+  const walletButtonText = useMemo(() => {
+    switch (status) {
+      case STATUS.CONNECTED:
+        return "지갑 연결끊기";
+      case STATUS.DISCONNECTED:
+        return "지갑 연결하기";
+      case STATUS.NOT_INSTALL:
+        return "지갑 설치하기";
+      default:
+        return "지갑 연결 끊기";
+    }
+  }, [status]);
+
+  const onClickButton = useCallback(() => {
+    switch (status) {
+      case STATUS.CONNECTED: {
+        disconnect();
+        break;
+      }
+      case STATUS.DISCONNECTED: {
+        connect();
+        break;
+      }
+      case STATUS.NOT_INSTALL: {
+        break;
+      }
+      default: {
+        connect();
+      }
+    }
+  }, [status]);
 
   return (
     <div className='App'>
@@ -36,18 +70,28 @@ function App() {
 
       <Container>
         <Title>2. 모달</Title>
-        <OpenModalButton
+        <Button
           onClick={() => {
             openPopup(<PopupA />);
           }}
         >
           Open Modal A
-        </OpenModalButton>
+        </Button>
 
         {popups.length > 0 && <ModalOverlay onClick={closePopup} />}
         {popups.map((popup, index) => (
           <div key={index}>{popup}</div>
         ))}
+      </Container>
+
+      <Container>
+        <Title>3. 지갑연결</Title>
+        <Button onClick={onClickButton}>{walletButtonText}</Button>
+        <VStack height={40}>
+          <p>계정: {account}</p>
+          <p>네트워크: {network}</p>
+          <p>이더리움 잔고: {balance}</p>
+        </VStack>
       </Container>
     </div>
   );
@@ -66,6 +110,13 @@ const HStack = styled.div<{ height: number }>`
   height: ${({ height }) => height}px;
 `;
 
+const VStack = styled.div<{ height: number }>`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: ${({ height }) => height}px;
+`;
+
 const Title = styled.span`
   font-size: 20px;
   color: black;
@@ -81,7 +132,7 @@ const TokenImage = styled.img`
   border-radius: 50%;
 `;
 
-const OpenModalButton = styled.button`
+const Button = styled.button`
   width: 200px;
   height: 50px;
   font-size: 16px;

@@ -1,6 +1,6 @@
 import { FunctionComponent, useMemo } from "react";
 import styled from "styled-components";
-import { TOKEN } from "../model/token";
+import { TOKEN } from "../../model/token";
 import Dropdown from "./Dropdown";
 
 interface TokenDropdownProps {
